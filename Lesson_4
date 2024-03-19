@@ -46,15 +46,13 @@ GROUP BY gender;
 
 Решение:
 
-SELECT u.id, ms.from_user_id
-FROM messages AS ms
-LEFT OUTER JOIN users AS u ON u.id = ms.from_user_id
-WHERE ms.from_user_id IS NULL
-UNION
-SELECT u.id, ms.from_user_id
-FROM messages AS ms
-RIGHT OUTER JOIN users AS u ON u.id = ms.from_user_id
-WHERE ms.from_user_id;
+SELECT DISTINCT id AS 'id'
+FROM users
+WHERE NOT EXISTS (
+	SELECT from_user_id
+	FROM messages
+	WHERE users.id = messages.from_user_id
+);
 
 Задача 4
 
